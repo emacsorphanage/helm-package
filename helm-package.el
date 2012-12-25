@@ -78,7 +78,9 @@
     (volatile)))
 
 (defun helm-package ()
-  (interactive)
+  (interactive "P")
+  (when current-prefix-arg
+    (package-refresh-contents))
   (let ((buf (get-buffer-create "*helm-package*")))
     (helm :sources '(helm-c-package-available-source helm-c-package-installed-source)
           :buffer buf)))

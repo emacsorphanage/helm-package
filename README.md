@@ -19,7 +19,7 @@ List package with helm interface
 
     M-x helm-package
 
-You should do `M-x package-refresh-contents` before calling this command.
+Do `M-x package-refresh-contents` if you use prefix argument(`C-u`).
 
 
 ## Sample Configuration
