@@ -58,7 +58,7 @@
     (package-initialize t)))
 
 (defvar helm-c-package-available-source
-  '((name . "helm available packages")
+  '((name . "Available Packageshelm available packages")
     (init . helm-c-package-initialize)
     (candidates . (lambda ()
                     (helm-c-package-installed-packages
@@ -68,7 +68,7 @@
     (volatile)))
 
 (defvar helm-c-package-installed-source
-  '((name . "helm installed packages")
+  '((name . "Installed Packages")
     (init . helm-c-package-initialize)
     (candidates . (lambda ()
                     (helm-c-package-installed-packages
