@@ -77,7 +77,8 @@
     (action . helm-c-package-install)
     (volatile)))
 
-(defun helm-package ()
+;;;###autoload
+(defun helm-package (arg)
   (interactive "P")
   (when current-prefix-arg
     (package-refresh-contents))
