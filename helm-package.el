@@ -1,10 +1,10 @@
 ;;; helm-package.el --- Listing ELPA packages with helm interface
 
-;; Copyright (C) 2012 by Syohei YOSHIDA
+;; Copyright (C) 2014 by Syohei YOSHIDA
 
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
 ;; URL: https://github.com/syohex/emacs-helm-package
-;; Package-Requires: ((helm "1.0"))
+;; Package-Requires: ((helm "1.0") (cl-lib "0.3"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -23,66 +23,69 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'cl))
+(require 'cl-lib)
 
 (require 'helm)
 (require 'package)
 
-(defun helm-c-package-installed-packages (pred)
+(defun helm-package--extract-package-name (package-info)
+  (cl-typecase package-info
+    (vector (replace-regexp-in-string
+             "\\s-*\\[source:[^\]]+\\]\\s-*" "" (aref package-info 2)))
+    ;; Emacs 24.4 or higher uses `package-desc' for package information
+    (cons (package-desc-summary (car package-info)))))
+
+(defun helm-package--collect-packages (pred)
   (let ((copyed (copy-sequence package-archive-contents)))
-    (loop with sorted = (sort copyed (lambda (a b)
-                                       (string< (car a) (car b))))
-          with regexp = "\\s-*\\[source:[^\]]+\\]\\s-*"
-          for candidate in sorted
-          for package = (symbol-name (car candidate))
-          for name = (if (> (length package) 30)
-                         (concat (substring package 0 27) "...")
-                       package)
-          for desc = (replace-regexp-in-string regexp ""
-                                               (aref (cdr candidate) 2))
-          when (funcall pred (car candidate))
-          collect
-          (cons (format "%-30s| %s"
-                        name
-                        (truncate-string-to-width desc (- (frame-width) 32)))
-                package))))
+    (cl-loop with sorted = (sort copyed (lambda (a b)
+                                          (string< (car a) (car b))))
+             for (package . package-info) in sorted
+             for package-name = (symbol-name package)
+             for candidate = (if (> (length package-name) 30)
+                                 (concat (substring package-name 0 27) "...")
+                               package-name)
+             for desc = (helm-package--extract-package-name package-info)
+             when (funcall pred package)
+             collect
+             (cons (format "%-30s| %s"
+                           candidate
+                           (truncate-string-to-width desc (- (frame-width) 32)))
+                   package))))
 
-(defun helm-c-package-install (candidate)
-  (loop for package in (helm-marked-candidates)
-        do
-        (package-install (intern package))))
+(defun helm-package--install (candidate)
+  (cl-loop for package in (helm-marked-candidates)
+           do
+           (package-install (intern package))))
 
-(defun helm-c-package-initialize ()
+(defun helm-package--initialize ()
   (unless package--initialized
     (package-initialize t)))
 
-(defvar helm-c-package-available-source
-  '((name . "Available Packageshelm available packages")
-    (init . helm-c-package-initialize)
+(defvar helm-package--available-source
+  '((name . "Available Packages")
+    (init . helm-package--initialize)
     (candidates . (lambda ()
-                    (helm-c-package-installed-packages
-                     (lambda (e) (not (assoc e package-alist))))))
+                    (helm-package--collect-packages 'identity)))
     (candidate-number-limit . 9999)
-    (action . helm-c-package-install)
+    (action . helm-package--install)
     (volatile)))
 
-(defvar helm-c-package-installed-source
+(defvar helm-package--installed-source
   '((name . "Installed Packages")
-    (init . helm-c-package-initialize)
+    (init . helm-package--initialize)
     (candidates . (lambda ()
-                    (helm-c-package-installed-packages
-                     (lambda (e) (assoc e package-alist)))))
+                    (helm-package--collect-packages 'package-installed-p)))
     (candidate-number-limit . 9999)
-    (action . helm-c-package-install)
+    (action . helm-package--install)
     (volatile)))
 
+;;;###autoload
 (defun helm-package ()
-  (interactive "P")
+  (interactive)
   (when current-prefix-arg
     (package-refresh-contents))
   (let ((buf (get-buffer-create "*helm-package*")))
-    (helm :sources '(helm-c-package-available-source helm-c-package-installed-source)
+    (helm :sources '(helm-package--available-source helm-package--installed-source)
           :buffer buf)))
 
 (provide 'helm-package)
