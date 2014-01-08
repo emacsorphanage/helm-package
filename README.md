@@ -4,7 +4,7 @@
 
 ## Screenshot
 
-![helm-package](https://github.com/syohex/emacs-helm-package/raw/master/image/helm-package1.png)
+![helm-package](image/helm-package1.png)
 
 
 ## Requirements
@@ -17,16 +17,18 @@
 
 List package with helm interface
 
-    M-x helm-package
+```
+M-x helm-package
+```
 
-Do `M-x package-refresh-contents` if you use prefix argument(`C-u`).
+Refresh packages list if you use prefix argument(`C-u`).
 
 
 ## Sample Configuration
 
-````
+```lisp
 (require 'helm-config)
 (require 'helm-package)
 
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-````
+```
