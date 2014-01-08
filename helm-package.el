@@ -4,6 +4,7 @@
 
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
 ;; URL: https://github.com/syohex/emacs-helm-package
+;; Version: 0.01
 ;; Package-Requires: ((helm "1.0") (cl-lib "0.3"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -20,6 +21,8 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
+
+;; Show available packages and installed packages with helm interface
 
 ;;; Code:
 
