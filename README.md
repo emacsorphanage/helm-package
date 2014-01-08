@@ -1,6 +1,7 @@
 # helm-package.el
 
-`helm-package.el` lists ELPA packages with helm-interface.
+`helm-package.el` provides command which show available packages and
+installed packages with helm-interface .
 
 ## Screenshot
 
@@ -15,11 +16,10 @@
 
 ## Basic Usage
 
-List package with helm interface
+#### helm-package
 
-```
-M-x helm-package
-```
+Show available packages and installed packages. Action is installing/updating
+selected packages.
 
 Refresh packages list if you use prefix argument(`C-u`).
 
