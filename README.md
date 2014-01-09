@@ -23,6 +23,10 @@ selected packages.
 
 Refresh packages list if you use prefix argument(`C-u`).
 
+#### Persistent Action
+
+Show package detail.
+
 
 ## Sample Configuration
 
