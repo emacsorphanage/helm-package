@@ -64,12 +64,17 @@
   (unless package--initialized
     (package-initialize t)))
 
+(defun helm-package--persistent-show-detail (package)
+  (with-help-window (help-buffer)
+    (princ (describe-package package))))
+
 (defvar helm-package--available-source
   '((name . "Available Packages")
     (init . helm-package--initialize)
     (candidates . (lambda ()
                     (helm-package--collect-packages 'identity)))
     (candidate-number-limit . 9999)
+    (persistent-action . helm-package--persistent-show-detail)
     (action . helm-package--install)
     (volatile)))
 
@@ -79,6 +84,7 @@
     (candidates . (lambda ()
                     (helm-package--collect-packages 'package-installed-p)))
     (candidate-number-limit . 9999)
+    (persistent-action . helm-package--persistent-show-detail)
     (action . helm-package--install)
     (volatile)))
 
