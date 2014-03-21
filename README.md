@@ -3,6 +3,9 @@
 `helm-package.el` provides command which show available packages and
 installed packages with helm-interface .
 
+helm implements the feature same as this package(`helm-list-elisp-packages`).
+You should it instead of this package if you use newer `helm`.
+
 ## Screenshot
 
 ![helm-package](image/helm-package1.png)
