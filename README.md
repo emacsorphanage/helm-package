@@ -1,4 +1,6 @@
-# helm-package.el
+# This Package is Deprecated
+
+## helm-package.el
 
 `helm-package.el` provides command which show available packages and
 installed packages with helm-interface .
