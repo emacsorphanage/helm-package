@@ -15,8 +15,7 @@ You should it instead of this package if you use newer `helm`.
 
 ## Requirements
 
-* Emacs 24.1 or higher.
-* helm 1.0 or higher
+* helm 1.7.7 or higher
 
 
 ## Basic Usage
@@ -39,5 +38,5 @@ Show package detail.
 (require 'helm-config)
 (require 'helm-package)
 
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 ```

@@ -1,5 +1,8 @@
 Revision history for helm-package.el
 
+Revision 0.03  2015/12/10 syohex
+  - Update for latest helm
+
 Revision 0.02  2014/01/09 syohex
   - Support persistent action
 
