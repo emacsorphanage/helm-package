@@ -58,7 +58,7 @@
 (defun helm-package--install (_candidate)
   (cl-loop for package in (helm-marked-candidates)
            do
-           (package-install (intern package))))
+           (package-install (or (and (stringp package) (intern package)) package))))
 
 (defun helm-package--initialize ()
   (unless package--initialized
